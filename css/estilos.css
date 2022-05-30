@@ -1,0 +1,123 @@
+@font-face {
+	font-family: "fuente";
+	src: url("fuente.ttf");
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "fuente", monospace, sans-serif;
+    font-size: 13px;
+}
+
+body {
+    margin: 0px;
+    user-select: none;
+    background-color: rgb(30, 30, 30);
+}
+
+#fondo {
+    width: 332px;
+    height: 420px;
+    margin: auto;
+    background-image: url("../imagenes/escenario.png");
+    background-repeat: no-repeat;
+}
+
+#escenario {
+    position: relative;
+    top: 70px;
+    justify-content: center;
+    display: grid;
+    gap: 8px;
+    grid-template-rows: 64px 64px 64px 64px;
+}
+
+#escenario .fila {
+    display: grid;
+    grid-template-columns: 64px 64px 64px 64px;
+    gap: 8px;
+}
+
+#escenario .fila .columna {
+    overflow: hidden;
+}
+
+#panel {
+    width: 332px;
+    margin: 10px auto auto auto;
+}
+
+#oro {
+    width: 298px;
+    margin: 10px auto auto auto;
+    border: 4px solid rgb(230, 230, 230);
+    padding: 3px;
+}
+
+#oro .contenido {
+    width: fit-content;
+    margin: auto;
+}
+
+#oro img, #oro span {
+    vertical-align: middle;
+    color: white;
+}
+
+#heroes {
+    display: flex;
+    justify-content: space-around;
+}
+
+#heroes button {
+    padding: 12px;
+    border-width: 0px;
+}
+
+#heroes button.activo {
+    background-color: rgb(14, 119, 189);
+    color: white;
+}
+
+#heroes button:not(.activo) {
+    background-color: rgb(230, 230, 230);
+    color: black;
+}
+
+.mover-enemigo {
+    animation-name: mover;
+    animation-duration: 900ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    position: absolute;
+}
+
+@keyframes mover {
+    from { 
+         transform: translateY(0px);
+    }
+    to { 
+        transform: translateY(72px);
+    }
+}
+
+.contenedor-combate {
+    overflow: hidden;
+    display: inline-block;
+    padding: 5px;
+    background-image: url("../imagenes/espada.png");
+}
+
+.salud-heroe, .salud-enemigo {
+    height: 12px;
+}
+
+.salud-heroe {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.salud-enemigo {
+    background-color: rgba(255, 123, 0, 0.9);
+}
