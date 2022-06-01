@@ -9,46 +9,81 @@
     <title>Ayudante de heroes</title>
 </head>
 <body>
-    <div id="fondo">
-        <div id="escenario">
-            <div class="fila">
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-            </div>
-            <div class="fila">
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-            </div>
-            <div class="fila">
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-            </div>
-            <div class="fila">
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-                <div class="columna"></div>
-            </div>
+    <div id="cargando" class="pantalla pantalla-activa">
+        <div class="imagen"></div>
+        <div id="contenido-cargando">
+            <span class="texto-cargando">Cargando</span>
+            <span id="punto-1" class="texto-cargando transicion">.</span>
+            <span id="punto-2" class="texto-cargando transicion">.</span>
+            <span id="punto-3" class="texto-cargando transicion">.</span>
         </div>
     </div>
 
-    <div id="panel">
-        <div id="heroes">
-            <button data-tipo="elfo">Elfo</button>
-            <button data-tipo="caballero">Caballero</button>
-            <button data-tipo="mago">Mago</button>
+    <div id="menu" class="pantalla">
+        <img src="imagenes/logo.png" width="233" height="190">
+        <button id="b-partida">Nueva Partida</button>
+        <button id="b-ayuda">Ayuda</button>
+        <button id="b-audio">Audio ON</button>
+        <button id="b-continuar" disabled>Continuar</button>
+    </div>
+
+    <div id="juego" class="pantalla">
+        <div id="intro">
+            <span id="n3">3</span>
+            <span id="n2">2</span>
+            <span id="n1">1</span>
         </div>
 
-        <div id="oro">
-            <div class="contenido">
-                <img src="imagenes/moneda.png" width="32" height="32">
-                <span></span>
+        <div id="fondo">
+            <div id="escenario">
+                <div class="fila">
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                </div>
+                <div class="fila">
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                </div>
+                <div class="fila">
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                </div>
+                <div class="fila">
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                    <div class="columna"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel">
+            <div id="heroes">
+                <button data-tipo="elfo">
+                    <img src="imagenes/elfo.png">
+                    <span>$10</span>
+                </button>
+                <button data-tipo="caballero">
+                    <img src="imagenes/caballero.png">
+                    <span>$30</span>
+                </button>
+                <button data-tipo="mago">
+                    <img src="imagenes/mago.png">
+                    <span>$40</span>
+                </button>
+            </div>
+
+            <div id="oro">
+                <div class="contenido">
+                    <img src="imagenes/moneda.png" width="32" height="32">
+                    <span></span>
+                </div>
             </div>
         </div>
     </div>

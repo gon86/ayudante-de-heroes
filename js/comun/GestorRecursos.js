@@ -5,7 +5,7 @@ export const GestorRecursos = iniciarRecursos();
  * @returns {Object} Objeto literal con sus métodos
  */
 function iniciarRecursos(){
-    const imagenes = ["escenario.png", "espada.png", "moneda-giratoria.png", "moneda.png", "personajes.png"];
+    const imagenes = ["boton.png", "cargando.png", "escenario.png", "espada.png", "logo.png", "moneda.png", "sprites.png"];
     const imagenesCargadas = [];
     let cantidadImagenesCargadas = 0;
 

@@ -15,10 +15,13 @@ body {
     background-color: rgb(30, 30, 30);
 }
 
-#fondo {
+.pantalla, #fondo, #intro {
     width: 332px;
     height: 420px;
     margin: auto;
+}
+
+#fondo {
     background-image: url("../imagenes/escenario.png");
     background-repeat: no-repeat;
 }
@@ -44,11 +47,11 @@ body {
 
 #panel {
     width: 332px;
-    margin: 10px auto auto auto;
+    margin-top: 10px;
 }
 
 #oro {
-    width: 298px;
+    width: 302px;
     margin: 10px auto auto auto;
     border: 4px solid rgb(230, 230, 230);
     padding: 3px;
@@ -70,18 +73,33 @@ body {
 }
 
 #heroes button {
-    padding: 12px;
     border-width: 0px;
+    padding-right: 10px;
+}
+
+#heroes button img, #heroes button span {
+    vertical-align: middle;
+}
+
+#heroes button span {
+    margin-left: -5px;
 }
 
 #heroes button.activo {
     background-color: rgb(14, 119, 189);
+}
+
+#heroes button span.activo {
     color: white;
 }
 
 #heroes button:not(.activo) {
     background-color: rgb(230, 230, 230);
     color: black;
+}
+
+#heroes button span:not(.activo) {
+    color: rgb(43, 43, 43);
 }
 
 .mover-enemigo {
@@ -120,4 +138,156 @@ body {
 
 .salud-enemigo {
     background-color: rgba(255, 123, 0, 0.9);
+}
+
+#menu img {
+    display: block;
+    margin: 10px auto auto auto;
+}
+
+#menu button {
+    display: block;
+    margin: auto;
+}
+
+#menu button {
+    background-image: url("../imagenes/boton.png");
+    border-width: 0px;
+    width: 233px;
+    height: 41px;
+    color: white;
+    margin-top: 10px;
+}
+
+#menu button:disabled {
+    opacity: 0.5;
+}
+
+.pantalla.pantalla-activa {
+    display: block;
+}
+
+.pantalla:not(.pantalla-activa) {
+    display: none;
+}
+
+#cargando .imagen {
+    width: 106px;
+    height: 98px;
+    background-image: url("../imagenes/cargando.png");
+    background-repeat: no-repeat;
+    margin: 150px auto auto auto;
+}
+
+#contenido-cargando {
+    width: fit-content;
+    margin: auto;
+    transform: translateX(12px);
+}
+
+#contenido-cargando .texto-cargando {
+    color: white;
+}
+
+#contenido-cargando .texto-cargando.transicion {
+    opacity: 0;
+    font-size: 17px;
+    animation-duration: 1200ms;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+}
+
+#punto-1 {
+    animation-name: cargando-1;
+}
+
+#punto-2 {
+    animation-name: cargando-2; 
+}
+
+#punto-3 {
+    animation-name: cargando-3;   
+}
+
+@keyframes cargando-1 {
+    0%{
+        opacity: 0;
+    }
+    33% {
+        opacity: 1;
+    }
+    66% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes cargando-2 {
+    0%{
+        opacity: 0;
+    }
+    33% {
+        opacity: 0;
+    }
+    66% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes cargando-3 {
+    0%{
+        opacity: 0;
+    }
+    33% {
+        opacity: 0;
+    }
+    66% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#intro {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    z-index: 1;
+}
+
+#intro span {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    display: block;
+    text-align: center;
+    margin-top: 192px;
+    margin-left: 158px;
+    opacity: 0;
+    animation-duration: 1000ms;
+    animation-name: numeros;
+}
+
+#n3 {
+    animation-delay: 0ms;
+}
+
+#n2 {
+    animation-delay: 1000ms;
+}
+
+#n1 {
+    animation-delay: 2000ms;
+}
+
+@keyframes numeros {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
 }

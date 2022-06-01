@@ -15,30 +15,52 @@ window.addEventListener("DOMContentLoaded", function(e){ GestorRecursos.cargar(i
  */
 function iniciar(){
     const precios = { elfo: 10, caballero: 30, mago: 40 };
-    const escenario = [];
-    let celdasEnemigos = [];
-    let oro = 100;
-    let tiempoEnemigo = 5000;
-    let cantidadEnemigos = 6;
-    let enemigosDerrotados = 0;
-    let indiceEnemigoActual = 0;
-    let heroeActivo = null;    
+    let escenario;
+    let celdasEnemigos;
+    let oro;
+    let tiempoEnemigo;
+    let cantidadEnemigos;
+    let enemigosDerrotados;
+    let indiceEnemigoActual;
+    let heroeActivo ;    
     let idIntervalo;
 
-    UI.oro.textContent = oro;
-    iniciarEscenario();
-    crearCeldasEnemigos();
-    UI.habilitar();
-    loop();
+    UI.mostrarPantalla("menu");
+
+    UI.botonPartida.addEventListener("click", function(e){
+        UI.mostrarPantalla("juego");
+        setTimeout(function(){
+            nuevaPartida();
+            UI.habilitar();
+            UI.ocultarIntro();
+        }, 3000);
+    });
+
+    UI.botonAyuda.addEventListener("click", function(e){
+        
+    });
+
+    UI.botonAudio.addEventListener("click", function(e){
+        
+    });
+
+    UI.botonContinuar.addEventListener("click", function(e){
+        
+    });
 
     UI.heroes.addEventListener("click", function(e){
-        if(UI.habilitada() && e.target.localName === "button"){
-            if(UI.obtenerHeroeActivo() !== null){
-                UI.obtenerHeroeActivo().classList.remove("activo");
+        if(UI.habilitada()){
+            if(e.target.localName === "button"){
+                quitarUltimoActivo();
+                e.target.classList.add("activo");
+                e.target.children[1].classList.add("activo");
+                heroeActivo = e.target.dataset.tipo;
+            } else if (e.target.localName === "img" || e.target.localName === "span"){
+                quitarUltimoActivo();
+                e.target.parentElement.classList.add("activo");
+                e.target.parentElement.children[1].classList.add("activo");
+                heroeActivo = e.target.parentElement.dataset.tipo;
             }
-
-            e.target.classList.add("activo");
-            heroeActivo = e.target.dataset.tipo;
         }
     });
 
@@ -80,6 +102,28 @@ function iniciar(){
         }
     });
 
+    function nuevaPartida(){
+        celdasEnemigos = [];
+        oro = 100;
+        tiempoEnemigo = 5000;
+        cantidadEnemigos = 6;
+        enemigosDerrotados = 0;
+        indiceEnemigoActual = 0;
+        heroeActivo = null;    
+        UI.oro.textContent = oro;
+
+        iniciarEscenario();
+        crearCeldasEnemigos();
+        loop();
+    }
+
+    function quitarUltimoActivo(){
+        if(UI.obtenerHeroeActivo() !== null){
+            UI.obtenerHeroeActivo().classList.remove("activo");
+            UI.obtenerSpanHeroeActivo().classList.remove("activo");
+        }
+    }
+
     function comprarHeroe(precio){
         if(oro >= precio){
             oro -= precio; 
@@ -91,6 +135,8 @@ function iniciar(){
     }
     
     function iniciarEscenario(){
+        escenario = [];
+
         for(let i=0; i<UI.filas.length; i++){
             const fila = [];
             for(let j=0; j<UI.filas[i].children.length; j++){

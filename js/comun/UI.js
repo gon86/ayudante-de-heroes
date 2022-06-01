@@ -5,6 +5,8 @@ export const UI = iniciarUI();
  * @returns {Object} Objeto literal con sus propiedades y métodos
  */
 function iniciarUI(){
+    const $pantallas = document.getElementsByClassName("pantalla");
+    const $intro = document.getElementById("intro");
     const celdas = document.querySelectorAll("#escenario .fila .columna");
     let habilitada = false;
 
@@ -13,6 +15,29 @@ function iniciarUI(){
         heroes: document.getElementById("heroes"),
         escenario: document.getElementById("escenario"),
         oro: document.querySelector("#oro .contenido span"),
+        botonPartida: document.getElementById("b-partida"),
+        botonAyuda: document.getElementById("b-ayuda"),
+        botonAudio: document.getElementById("b-audio"),
+        botonContinuar: document.getElementById("b-continuar"),
+        
+        mostrarIntro(){
+            $intro.style.display = "block";
+        },
+
+        ocultarIntro(){
+            $intro.style.display = "none";
+        },
+
+        mostrarPantalla: function(id){
+            for(let i=0; i<$pantallas.length; i++){
+                if($pantallas[i].classList.contains("pantalla-activa")){
+                    $pantallas[i].classList.remove("pantalla-activa");
+                    break;
+                }
+            }
+
+            document.getElementById(id).classList.add("pantalla-activa");
+        },
         
         habilitada(){
             return habilitada;
@@ -27,7 +52,11 @@ function iniciarUI(){
         },
 
         obtenerHeroeActivo: function(){
-            return document.querySelector("#heroes button.activo")
+            return document.querySelector("#heroes button.activo");
+        },
+
+        obtenerSpanHeroeActivo: function(){
+            return document.querySelector("#heroes button span.activo");
         },
 
         obtenerCelda: function(pFila, pColumna){
