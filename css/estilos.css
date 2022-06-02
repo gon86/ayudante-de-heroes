@@ -20,7 +20,7 @@ body {
     margin: auto;
 }
 
-.pantalla, #fondo {
+.pantalla:not(#ayuda), #fondo {
     height: 420px;
 }
 
@@ -358,6 +358,7 @@ body {
     color: white;
     padding: 15px 22px 0px 22px;
     overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 #ayuda .titulo {
