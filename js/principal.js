@@ -14,20 +14,48 @@ window.addEventListener("DOMContentLoaded", function(e){ GestorRecursos.cargar(i
  * Inicia la aplicación
  */
 function iniciar(){
-    const precios = { elfo: 10, caballero: 30, mago: 40 };
-    let tiempoEnemigo;
-    let cantidadEnemigos;
-    let nivel;
-    let oro;
-    let oroAnterior;
-    let escenario;
-    let celdasEnemigos;
-    let enemigosDerrotados;
-    let indiceEnemigoActual;
-    let heroeActivo;    
-    let idIntervalo;
+    const audioClick = GestorRecursos.obtenerAudio("click.mp3"),
+          audioDerrota = GestorRecursos.obtenerAudio("derrota.mp3"),
+          audioMoneda = GestorRecursos.obtenerAudio("moneda.mp3"),
+          audioMusica = GestorRecursos.obtenerAudio("musica.mp3"),
+          audioNuevaPartida = GestorRecursos.obtenerAudio("nueva-partida.mp3"),
+          audioVictoria = GestorRecursos.obtenerAudio("victoria.mp3"),
+          precios = { elfo: 10, caballero: 30, mago: 40 };
 
+    let audioActivado = true,
+        reproduciendoMusica = false,
+        tiempoEnemigo,
+        cantidadEnemigos,
+        nivel,
+        oro,
+        oroAnterior,
+        escenario,
+        celdasEnemigos,
+        enemigosDerrotados,
+        indiceEnemigoActual,
+        heroeActivo,
+        idIntervalo;
+
+    audioMusica.loop();
     UI.mostrarPantalla("menu");
+
+    /**
+     * Al perder el foco la ventana, se desactiva el audio
+     */
+    window.addEventListener("blur", function(e){
+        if(reproduciendoMusica){
+            detenerAudio(audioMusica);
+        }
+    });
+
+    /**
+     * Al tomar foco la ventana, se activa el audio
+     */
+    window.addEventListener("focus", function(e){
+        if(reproduciendoMusica){
+            reproducirAudio(audioMusica);
+        }
+    });
 
     UI.botonPartida.addEventListener("click", function(e){
         tiempoEnemigo = 5200
@@ -42,6 +70,7 @@ function iniciar(){
             UI.botonContinuar.removeAttribute("disabled");
             UI.botonContinuar.style.display = "block";
             UI.mostrarPantalla("menu");
+            reproducirAudio(audioClick);
         }
         else if(e.target.classList.contains("b-siguiente")){
             if(UI.victoria.style.display === "block"){
@@ -56,15 +85,23 @@ function iniciar(){
     });
 
     UI.botonAyuda.addEventListener("click", function(e){
-        
+        reproducirAudio(audioClick);
     });
 
     UI.botonAudio.addEventListener("click", function(e){
-        
+        reproducirAudio(audioClick);
+        if(audioActivado){
+            UI.botonAudio.textContent = "Audio OFF";
+            audioActivado = false;
+        } else {
+            UI.botonAudio.textContent = "Audio ON";
+            audioActivado = true;
+        }
     });
 
     UI.botonContinuar.addEventListener("click", function(e){
         UI.mostrarPantalla("juego");
+        reproducirAudio(audioClick);
     });
 
     UI.heroes.addEventListener("click", function(e){
@@ -74,11 +111,13 @@ function iniciar(){
                 e.target.classList.add("activo");
                 e.target.children[1].classList.add("activo");
                 heroeActivo = e.target.dataset.tipo;
+                reproducirAudio(audioClick);
             } else if (e.target.localName === "img" || e.target.localName === "span"){
                 quitarUltimoActivo();
                 e.target.parentElement.classList.add("activo");
                 e.target.parentElement.children[1].classList.add("activo");
                 heroeActivo = e.target.parentElement.dataset.tipo;
+                reproducirAudio(audioClick);
             }
         }
     });
@@ -96,6 +135,7 @@ function iniciar(){
                 if(fila !== 0 && comprarHeroe(precio)){
                     celda.appendChild(heroe.obtenerImagen());
                     escenario[fila][columna] = heroe;  
+                    reproducirAudio(audioClick);
                 }
             } 
             else if(e.target.localName === "img"){
@@ -110,18 +150,33 @@ function iniciar(){
                     celda.removeChild(contenedor);
                     celda.appendChild(heroe.obtenerImagen());
                     escenario[fila][columna] = heroe;
+                    reproducirAudio(audioClick);
                 }
                 else if(escenario[fila][columna].constructor.name === "Moneda"){
                     celda.removeChild(contenedor);
                     escenario[fila][columna] = null;
                     oro += 25;
                     UI.oro.textContent = oro;
+                    reproducirAudio(audioMoneda);
                 }
             }
         }
     });
 
+    function reproducirAudio(audio){
+        if(audioActivado){
+            audio.play();
+        }
+    }
+
+    function detenerAudio(audio){
+        if(audioActivado){
+            audio.stop();
+        }
+    }
+
     function nuevaPartida(reintentar){
+        reproducirAudio(audioNuevaPartida);
         UI.mostrarPantalla("juego");
         UI.ocultarVictoria();
         UI.ocultarDerrota();
@@ -147,6 +202,8 @@ function iniciar(){
     }
 
     function comenzarJuego(){
+        reproducirAudio(audioMusica);
+        reproduciendoMusica = true;
         celdasEnemigos = [];
         enemigosDerrotados = 0;
         indiceEnemigoActual = 0;
@@ -330,6 +387,9 @@ function iniciar(){
                 UI.deshabilitar();
                 personaje.establecerHaLlegado(true);
                 UI.mostrarDerrota();
+                detenerAudio(audioMusica);
+                reproduciendoMusica = false;
+                reproducirAudio(audioDerrota);
             }
         }
         else {
@@ -337,6 +397,9 @@ function iniciar(){
                 clearInterval(idIntervalo);
                 UI.deshabilitar();
                 UI.mostrarVictoria();
+                reproduciendoMusica = false;
+                detenerAudio(audioMusica);
+                reproducirAudio(audioVictoria);
             } else {
                 generarMoneda();
             }

@@ -191,7 +191,7 @@ body {
     height: 98px;
     background-image: url("../imagenes/cargando.png");
     background-repeat: no-repeat;
-    margin: 150px auto auto auto;
+    margin: 120px auto auto auto;
 }
 
 #contenido-cargando {
