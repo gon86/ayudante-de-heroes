@@ -18,12 +18,39 @@ function iniciarUI(){
         oro: document.querySelector("#monedas span"),
         botonPartida: document.getElementById("b-partida"),
         botonAyuda: document.getElementById("b-ayuda"),
+        botonVolver: document.getElementById("b-volver"),
         botonAudio: document.getElementById("b-audio"),
         botonContinuar: document.getElementById("b-continuar"),
         juego: document.getElementById("juego"),
         victoria: document.getElementById("victoria"),
         derrota: document.getElementById("derrota"),
         nivel: document.getElementById("numero-nivel"),
+        ayuda: {
+            elfo: {
+                imagen: document.querySelector("#elfo .imagen"),
+                caracteristicas: document.querySelector("#elfo .caracteristicas")
+            },
+            caballero: {
+                imagen: document.querySelector("#caballero .imagen"),
+                caracteristicas: document.querySelector("#caballero .caracteristicas")
+            },
+            mago: {
+                imagen: document.querySelector("#mago .imagen"),
+                caracteristicas: document.querySelector("#mago .caracteristicas")
+            },
+            zombie: {
+                imagen: document.querySelector("#zombie .imagen"),
+                caracteristicas: document.querySelector("#zombie .caracteristicas")
+            },
+            ogro: {
+                imagen: document.querySelector("#ogro .imagen"),
+                caracteristicas: document.querySelector("#ogro .caracteristicas")
+            },
+            demonio: {
+                imagen: document.querySelector("#demonio .imagen"),
+                caracteristicas: document.querySelector("#demonio .caracteristicas")
+            }
+        },
         
         mostrarVictoria(){
             this.victoria.style.display = "block";

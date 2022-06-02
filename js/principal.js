@@ -36,6 +36,7 @@ function iniciar(){
         heroeActivo,
         idIntervalo;
 
+    crearPersonajesAyuda();
     audioMusica.loop();
     UI.mostrarPantalla("menu");
 
@@ -86,6 +87,12 @@ function iniciar(){
 
     UI.botonAyuda.addEventListener("click", function(e){
         reproducirAudio(audioClick);
+        UI.mostrarPantalla("ayuda");
+    });
+
+    UI.botonVolver.addEventListener("click", function(e){
+        reproducirAudio(audioClick);
+        UI.mostrarPantalla("menu");
     });
 
     UI.botonAudio.addEventListener("click", function(e){
@@ -162,6 +169,53 @@ function iniciar(){
             }
         }
     });
+
+    function crearPersonajesAyuda(){
+        const elfo = new Heroe("elfo");
+        UI.ayuda.elfo.imagen.appendChild(elfo.obtenerImagen());
+        UI.ayuda.elfo.caracteristicas.innerHTML = `
+            Salud: ${elfo.salud} <br>  
+            Ataque: ${elfo.ataque} <br>
+            Precio: $${precios.elfo}  
+        `;
+
+        const caballero = new Heroe("caballero");
+        UI.ayuda.caballero.imagen.appendChild(caballero.obtenerImagen());
+        UI.ayuda.caballero.caracteristicas.innerHTML = `
+            Salud: ${caballero.salud} <br>  
+            Ataque: ${caballero.ataque} <br>
+            Precio: $${precios.caballero}  
+        `;
+
+        const mago = new Heroe("mago");
+        UI.ayuda.mago.imagen.appendChild(mago.obtenerImagen());
+        UI.ayuda.mago.caracteristicas.innerHTML = `
+            Salud: ${mago.salud} <br>  
+            Ataque: ${mago.ataque} <br>
+            Precio: $${precios.mago}  
+        `;
+
+        const zombie = new Enemigo("zombie");
+        UI.ayuda.zombie.imagen.appendChild(zombie.obtenerImagen());
+        UI.ayuda.zombie.caracteristicas.innerHTML = `
+            Salud: ${zombie.salud} <br>  
+            Ataque: ${zombie.ataque} 
+        `;
+
+        const ogro = new Enemigo("ogro");
+        UI.ayuda.ogro.imagen.appendChild(ogro.obtenerImagen());
+        UI.ayuda.ogro.caracteristicas.innerHTML = `
+            Salud: ${ogro.salud} <br>  
+            Ataque: ${ogro.ataque} 
+        `;
+
+        const demonio = new Enemigo("demonio");
+        UI.ayuda.demonio.imagen.appendChild(demonio.obtenerImagen());
+        UI.ayuda.demonio.caracteristicas.innerHTML = `
+            Salud: ${demonio.salud} <br>  
+            Ataque: ${demonio.ataque} 
+        `;
+    }
 
     function reproducirAudio(audio){
         if(audioActivado){

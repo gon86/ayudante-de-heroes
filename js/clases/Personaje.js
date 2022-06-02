@@ -4,7 +4,6 @@ export class Personaje extends Sprite {
     constructor(tipo){
         super();
         this.tipo = tipo;
-        this.experiencia = 0;
         this.salud = 0;
         this.ataque = 0;
     }
