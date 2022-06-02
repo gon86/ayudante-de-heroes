@@ -13,13 +13,34 @@ function iniciarUI(){
     return {
         filas: document.querySelectorAll("#escenario .fila"),
         heroes: document.getElementById("heroes"),
+        botonesHeroes: document.querySelectorAll("#heroes button"),
         escenario: document.getElementById("escenario"),
-        oro: document.querySelector("#oro .contenido span"),
+        oro: document.querySelector("#monedas span"),
         botonPartida: document.getElementById("b-partida"),
         botonAyuda: document.getElementById("b-ayuda"),
         botonAudio: document.getElementById("b-audio"),
         botonContinuar: document.getElementById("b-continuar"),
+        juego: document.getElementById("juego"),
+        victoria: document.getElementById("victoria"),
+        derrota: document.getElementById("derrota"),
+        nivel: document.getElementById("numero-nivel"),
         
+        mostrarVictoria(){
+            this.victoria.style.display = "block";
+        },
+
+        ocultarVictoria(){
+            this.victoria.style.display = "none";
+        },
+
+        mostrarDerrota(){
+            this.derrota.style.display = "block";
+        },
+
+        ocultarDerrota(){
+            this.derrota.style.display = "none";
+        },
+
         mostrarIntro(){
             $intro.style.display = "block";
         },

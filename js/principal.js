@@ -15,25 +15,44 @@ window.addEventListener("DOMContentLoaded", function(e){ GestorRecursos.cargar(i
  */
 function iniciar(){
     const precios = { elfo: 10, caballero: 30, mago: 40 };
-    let escenario;
-    let celdasEnemigos;
-    let oro;
     let tiempoEnemigo;
     let cantidadEnemigos;
+    let nivel;
+    let oro;
+    let oroAnterior;
+    let escenario;
+    let celdasEnemigos;
     let enemigosDerrotados;
     let indiceEnemigoActual;
-    let heroeActivo ;    
+    let heroeActivo;    
     let idIntervalo;
 
     UI.mostrarPantalla("menu");
 
     UI.botonPartida.addEventListener("click", function(e){
-        UI.mostrarPantalla("juego");
-        setTimeout(function(){
-            nuevaPartida();
-            UI.habilitar();
-            UI.ocultarIntro();
-        }, 3000);
+        tiempoEnemigo = 5200
+        cantidadEnemigos = 3
+        nivel = 0;
+        oro = 100;
+        nuevaPartida(false);
+    });
+
+    UI.juego.addEventListener("click", function(e){
+        if(e.target.classList.contains("b-menu")){
+            UI.botonContinuar.removeAttribute("disabled");
+            UI.botonContinuar.style.display = "block";
+            UI.mostrarPantalla("menu");
+        }
+        else if(e.target.classList.contains("b-siguiente")){
+            if(UI.victoria.style.display === "block"){
+                oro += 100;
+                nuevaPartida(false);
+            }
+            else if(UI.derrota.style.display === "block"){
+                oro = oroAnterior;
+                nuevaPartida(true);
+            }
+        }
     });
 
     UI.botonAyuda.addEventListener("click", function(e){
@@ -45,7 +64,7 @@ function iniciar(){
     });
 
     UI.botonContinuar.addEventListener("click", function(e){
-        
+        UI.mostrarPantalla("juego");
     });
 
     UI.heroes.addEventListener("click", function(e){
@@ -102,19 +121,52 @@ function iniciar(){
         }
     });
 
-    function nuevaPartida(){
+    function nuevaPartida(reintentar){
+        UI.mostrarPantalla("juego");
+        UI.ocultarVictoria();
+        UI.ocultarDerrota();
+        UI.mostrarIntro();
+        UI.oro.textContent = oro;
+        oroAnterior = oro;
+        heroeActivo = null;    
+        iniciarEscenario();
+
+        for(let i=0; i<UI.botonesHeroes.length; i++){
+            if(UI.botonesHeroes[i].classList.contains("activo")){
+                UI.botonesHeroes[i].classList.remove("activo");
+                UI.botonesHeroes[i].children[1].classList.remove("activo");
+            }
+        }
+
+        actualizarNivel(reintentar);
+        setTimeout(function(){
+            comenzarJuego();
+            UI.habilitar();
+            UI.ocultarIntro();
+        }, 3000);
+    }
+
+    function comenzarJuego(){
         celdasEnemigos = [];
-        oro = 100;
-        tiempoEnemigo = 5000;
-        cantidadEnemigos = 6;
         enemigosDerrotados = 0;
         indiceEnemigoActual = 0;
-        heroeActivo = null;    
-        UI.oro.textContent = oro;
-
-        iniciarEscenario();
         crearCeldasEnemigos();
         loop();
+    }
+
+    function actualizarNivel(reintentar){
+        if(!reintentar){
+            nivel++;
+
+            if(tiempoEnemigo > 2000){
+                tiempoEnemigo -= 200;
+            }
+            if(cantidadEnemigos < 10){
+                cantidadEnemigos++;
+            }
+        }
+
+        UI.nivel.textContent = nivel;
     }
 
     function quitarUltimoActivo(){
@@ -140,8 +192,12 @@ function iniciar(){
         for(let i=0; i<UI.filas.length; i++){
             const fila = [];
             for(let j=0; j<UI.filas[i].children.length; j++){
-                UI.filas[i].children[j].dataset.f = i;
-                UI.filas[i].children[j].dataset.c = j;
+                const celda =  UI.filas[i].children[j];
+                if(celda.children.length > 0){
+                    celda.removeChild(celda.children[0]);
+                }
+                celda.dataset.f = i;
+                celda.dataset.c = j;
                 fila.push(null);
             }   
             escenario.push(fila);
@@ -230,34 +286,41 @@ function iniciar(){
         const elementoEnemigo = celdaEnemigo.children[0];
         const siguienteFilaEscenario = escenario[posicion.fila+1][posicion.columna];
   
-        elementoEnemigo.classList.add("mover-enemigo");
+        if(siguienteFilaEscenario === null || 
+          (siguienteFilaEscenario !== null && 
+          (siguienteFilaEscenario.constructor.name === "Heroe" || 
+           siguienteFilaEscenario.constructor.name === "Moneda"))){
 
-        setTimeout(function(){
-            escenario[posicion.fila][posicion.columna] = null;
-            enemigo.establecerPosicion(posicion.fila+1, posicion.columna);
-            elementoEnemigo.classList.remove("mover-enemigo");
-            
-            const siguienteCelda = UI.obtenerSiguienteCelda(posicion.fila, posicion.columna);
-            const elementoEscenario = escenario[enemigo.obtenerPosicion().fila][posicion.columna];
-            
-            if(elementoEscenario === null ){
-                escenario[enemigo.obtenerPosicion().fila][posicion.columna] = enemigo;
-                siguienteCelda.appendChild(elementoEnemigo);
-            } else if(elementoEscenario.constructor.name === "Heroe"){
-                const combate = new Combate(elementoEscenario, enemigo);
-                escenario[enemigo.obtenerPosicion().fila][posicion.columna] = combate;
-                enemigo.combatiendo(true);
-                celdaEnemigo.removeChild(elementoEnemigo);
-                siguienteCelda.removeChild(siguienteCelda.children[0]);
-                siguienteCelda.appendChild(combate.obtenerImagen());         
-            } else if(elementoEscenario.constructor.name === "Moneda"){
-                escenario[enemigo.obtenerPosicion().fila][posicion.columna] = enemigo;
-                siguienteCelda.removeChild(siguienteCelda.children[0]);
-                siguienteCelda.appendChild(elementoEnemigo);
-            }
+           elementoEnemigo.classList.add("mover-enemigo");
+           escenario[posicion.fila][posicion.columna] = null;
+    
+            setTimeout(function(){
+                enemigo.establecerPosicion(posicion.fila+1, posicion.columna);
+                elementoEnemigo.classList.remove("mover-enemigo");
+                
+                const siguienteCelda = UI.obtenerSiguienteCelda(posicion.fila, posicion.columna);
+                const elementoEscenario = escenario[enemigo.obtenerPosicion().fila][posicion.columna];
+    
+                if(elementoEscenario === null){
+                    escenario[enemigo.obtenerPosicion().fila][posicion.columna] = enemigo;
+                    siguienteCelda.appendChild(elementoEnemigo);
+                } else if(elementoEscenario.constructor.name === "Heroe"){
+                    const combate = new Combate(elementoEscenario, enemigo);
+                    escenario[enemigo.obtenerPosicion().fila][posicion.columna] = combate;
+                    enemigo.combatiendo(true);
+                    celdaEnemigo.removeChild(elementoEnemigo);
+                    siguienteCelda.removeChild(siguienteCelda.children[0]);
+                    siguienteCelda.appendChild(combate.obtenerImagen());         
+                } else if(elementoEscenario.constructor.name === "Moneda"){
+                    escenario[enemigo.obtenerPosicion().fila][posicion.columna] = enemigo;
+                    siguienteCelda.removeChild(siguienteCelda.children[0]);
+                    siguienteCelda.appendChild(elementoEnemigo);
+                }
 
-            verificarFin(enemigo, true);
-        }, 900);
+                verificarFin(enemigo, true);
+            }, 900);
+        }
+
     }
 
     function verificarFin(personaje, esEnemigo){
@@ -266,14 +329,14 @@ function iniciar(){
                 clearInterval(idIntervalo);
                 UI.deshabilitar();
                 personaje.establecerHaLlegado(true);
-                console.log("Perdiste...");
+                UI.mostrarDerrota();
             }
         }
         else {
             if(enemigosDerrotados === cantidadEnemigos){
                 clearInterval(idIntervalo);
                 UI.deshabilitar();
-                console.log("¡Ganaste!");
+                UI.mostrarVictoria();
             } else {
                 generarMoneda();
             }

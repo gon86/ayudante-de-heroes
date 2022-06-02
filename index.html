@@ -21,17 +21,33 @@
 
     <div id="menu" class="pantalla">
         <img src="imagenes/logo.png" width="233" height="190">
+        <button id="b-continuar" disabled style="display: none;">Continuar</button>
         <button id="b-partida">Nueva Partida</button>
         <button id="b-ayuda">Ayuda</button>
         <button id="b-audio">Audio ON</button>
-        <button id="b-continuar" disabled>Continuar</button>
     </div>
 
     <div id="juego" class="pantalla">
-        <div id="intro">
+        <div id="intro" class="estado">
             <span id="n3">3</span>
             <span id="n2">2</span>
             <span id="n1">1</span>
+        </div>
+
+        <div id="victoria" class="estado">
+            <div class="popup animado">
+                <span>¡ Nivel superado !</span>
+                <button class="b-menu">Menú</button>
+                <button class="b-siguiente">Siguiente</button>
+            </div>
+        </div>
+
+        <div id="derrota" class="estado">
+            <div class="popup animado">
+                <span>Has sido derrotado</span>
+                <button class="b-menu">Menú</button>
+                <button class="b-siguiente">Volver a intentar</button>
+            </div>
         </div>
 
         <div id="fondo">
@@ -81,8 +97,14 @@
 
             <div id="oro">
                 <div class="contenido">
-                    <img src="imagenes/moneda.png" width="32" height="32">
-                    <span></span>
+                    <div id="nivel" class="bloque">
+                        <span>Nivel:</span> 
+                        <span id="numero-nivel"></span>
+                    </div>
+                    <div id="monedas" class="bloque">
+                        <img src="imagenes/moneda.png" width="32" height="32">
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </div>

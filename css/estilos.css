@@ -15,10 +15,21 @@ body {
     background-color: rgb(30, 30, 30);
 }
 
-.pantalla, #fondo, #intro {
+.pantalla, #fondo, .estado {
     width: 332px;
-    height: 420px;
     margin: auto;
+}
+
+.pantalla, #fondo {
+    height: 420px;
+}
+
+.estado {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    z-index: 1;
+    display: none;
 }
 
 #fondo {
@@ -62,7 +73,11 @@ body {
     margin: auto;
 }
 
-#oro img, #oro span {
+#oro .bloque {
+    display: inline-block;
+}
+
+#oro .bloque img, #oro .bloque span {
     vertical-align: middle;
     color: white;
 }
@@ -254,13 +269,6 @@ body {
     }
 }
 
-#intro {
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    position: fixed;
-    z-index: 1;
-}
-
 #intro span {
     position: absolute;
     color: white;
@@ -290,4 +298,58 @@ body {
     0%   { opacity: 0; }
     50%  { opacity: 1; }
     100% { opacity: 0; }
+}
+
+#juego .popup.animado {
+    animation-duration: 500ms;
+    animation-name: aparecer-popup;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes aparecer-popup {
+    0% { 
+        opacity: 0;
+        transform: scale(0.8, 0.8); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.1, 1.1); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1, 1); 
+    }
+}
+
+#victoria .popup {
+    background-color: rgb(14, 119, 189);
+}
+
+#derrota .popup {
+    background-color: rgb(224, 69, 45);
+}
+
+.popup {
+    color: white;
+    padding: 30px 15px 30px 15px;
+    margin: 140px auto auto auto;
+    width: 250px;
+    border-bottom: 4px solid black;
+}
+
+.popup button {
+    padding: 10px 14px 10px 14px;
+    display: block;
+    margin: auto auto 8px auto;
+    border-width: 0px;
+    background-color: white;
+    color: rgb(30, 30, 30);
+}
+
+.popup span {
+    text-align: center;
+    display: block;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
