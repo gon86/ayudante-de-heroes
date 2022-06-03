@@ -252,6 +252,7 @@ function iniciar(){
      */
     function reproducirAudio(audio){
         if(audioActivado){
+            audio.stop();
             audio.play();
         }
     }
@@ -320,7 +321,7 @@ function iniciar(){
             if(tiempoEnemigo > 1000){
                 tiempoEnemigo -= 250;
             }
-            if(cantidadEnemigos < 12){
+            if(cantidadEnemigos < 16){
                 cantidadEnemigos++;
             }
         }
@@ -433,10 +434,12 @@ function iniciar(){
         const celdasLibres = obtenerCeldasLibres();
         const indice = obtenerAleatorio(celdasLibres.length);
         const celda = celdasLibres[indice];
-        const moneda = new Moneda();
-
-        escenario[celda.fila][celda.columna] = moneda;
-        UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
+        
+        if(escenario[celda.fila][celda.columna] === null){
+            const moneda = new Moneda();    
+            escenario[celda.fila][celda.columna] = moneda;
+            UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
+        }
     }
 
     /**
@@ -578,7 +581,7 @@ function iniciar(){
     }
 
     /**
-     * Obtiene un número aleatoria
+     * Obtiene un número aleatorio
      * @param {Number} limite El número límite
      * @returns {Number} El número generado
      */
