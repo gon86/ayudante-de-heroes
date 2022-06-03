@@ -52,30 +52,52 @@ function iniciarUI(){
             }
         },
         
+        /**
+         * Muestra el popup victoria
+         */
         mostrarVictoria(){
             this.victoria.style.display = "block";
         },
 
+        /**
+         * Oculta el popup victoria
+         */
         ocultarVictoria(){
             this.victoria.style.display = "none";
         },
 
+        /**
+         * Muestra el popup derrota
+         */
         mostrarDerrota(){
             this.derrota.style.display = "block";
         },
 
+        /**
+         * Oculta el popup derrota
+         */
         ocultarDerrota(){
             this.derrota.style.display = "none";
         },
 
+        /**
+         * Muestra la cuenta de la intro
+         */
         mostrarIntro(){
             $intro.style.display = "block";
         },
 
+        /**
+         * Oculta la cuenta de la intro
+         */
         ocultarIntro(){
             $intro.style.display = "none";
         },
 
+        /**
+         * Muestra una pantalla específica
+         * @param {String} id El id del elemento HTML
+         */
         mostrarPantalla: function(id){
             for(let i=0; i<$pantallas.length; i++){
                 if($pantallas[i].classList.contains("pantalla-activa")){
@@ -87,26 +109,50 @@ function iniciarUI(){
             document.getElementById(id).classList.add("pantalla-activa");
         },
         
+        /**
+         * Obtiene el estado de la interfaz
+         * @returns {Boolean} Indica si la interfaz está habilitada
+         */
         habilitada(){
             return habilitada;
         },
 
+        /**
+         * Habilita la interfaz
+         */
         habilitar(){
             habilitada = true;
         },
 
+        /**
+         * Deshabilita la interfaz
+         */
         deshabilitar(){
             habilitada = false;
         },
 
+        /**
+         * Obtiene el botón del héroe activo
+         * @returns {Object} Elemento HTML
+         */
         obtenerHeroeActivo: function(){
             return document.querySelector("#heroes button.activo");
         },
 
+        /**
+         * Obtiene el span del héroe activo
+         * @returns {Object} Elemento HTML
+         */
         obtenerSpanHeroeActivo: function(){
             return document.querySelector("#heroes button span.activo");
         },
 
+        /**
+         * Obtiene una celda específica
+         * @param {Number} pFila La fila
+         * @param {Number} pColumna La columna
+         * @returns {Object} La celda
+         */
         obtenerCelda: function(pFila, pColumna){
             for(let i=0; i<celdas.length; i++){
                 if(parseFloat(celdas[i].dataset.f) === pFila && parseFloat(celdas[i].dataset.c) === pColumna){
@@ -117,6 +163,12 @@ function iniciarUI(){
             return null;
         },
 
+        /**
+         * Obtiene la celda de la siguiente fila
+         * @param {Number} pFila La fila
+         * @param {Number} pColumna La columna
+         * @returns {Object} La celda
+         */
         obtenerSiguienteCelda: function(pFila, pColumna){
             for(let i=0; i<celdas.length; i++){
                 if(parseFloat(celdas[i].dataset.f) === (pFila+1) && parseFloat(celdas[i].dataset.c) === pColumna){

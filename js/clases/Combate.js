@@ -1,4 +1,12 @@
+/**
+ * Permite controlar un combate
+ */
 export class Combate {
+    /**
+     * Crea el combate
+     * @param {Heroe} heroe El héroe
+     * @param {Enemigo} enemigo El enemigo
+     */
     constructor(heroe, enemigo){
         this.heroe = heroe;
         this.enemigo = enemigo;
@@ -9,6 +17,10 @@ export class Combate {
         this.saludEnemigo = document.createElement("div");
     }
 
+    /**
+     * Establece el siguiente turno
+     * @returns {Personaje} El personaje al que le toca el turno
+     */
     siguienteTurno(){
         let fin;
         let ultimoAtacante;
@@ -31,11 +43,20 @@ export class Combate {
         return null;
     }
 
+    /**
+     * Actualiza el ancho de la barra de salud
+     * @param {Personaje} personaje El personaje
+     * @param {Object} barraSalud El elemento HTML que representa la barra
+     */
     actualizarAnchoBarra(personaje, barraSalud){
         const anchoEnPx = personaje.salud * this.anchoBarra / 100;
         barraSalud.style.width = Math.round(anchoEnPx) + "px";
     }
 
+    /**
+     * Obtiene la imagen del combate
+     * @returns {Object} Div que contiene las barras de ambos personajes
+     */
     obtenerImagen(){
         const contenedor = document.createElement("div");
         contenedor.style.width = this.tamano + "px";

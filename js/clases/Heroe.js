@@ -1,11 +1,21 @@
 import { Personaje } from "./Personaje.js";
 
+/**
+ * Controla al héroe
+ */
 export class Heroe extends Personaje {
+    /**
+     * Crea el héroe
+     * @param {String} tipo El tipo de héroe
+     */
     constructor(tipo){
         super(tipo);
         this.iniciar();
     }
 
+    /**
+     * Establece los valores iniciales para crear al héroe
+     */
     iniciar(){
         let y = 0;
 

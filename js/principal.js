@@ -58,14 +58,20 @@ function iniciar(){
         }
     });
 
+    /**
+     * Nueva partida
+     */
     UI.botonPartida.addEventListener("click", function(e){
-        tiempoEnemigo = 5200
-        cantidadEnemigos = 3
+        tiempoEnemigo = 3750;
+        cantidadEnemigos = 5;
         nivel = 0;
-        oro = 100;
+        oro = 150;
         nuevaPartida(false);
     });
 
+    /**
+     * Eventos del contenedor juego
+     */
     UI.juego.addEventListener("click", function(e){
         if(e.target.classList.contains("b-menu")){
             UI.botonContinuar.removeAttribute("disabled");
@@ -85,16 +91,25 @@ function iniciar(){
         }
     });
 
+    /**
+     * Botón ayuda
+     */
     UI.botonAyuda.addEventListener("click", function(e){
         reproducirAudio(audioClick);
         UI.mostrarPantalla("ayuda");
     });
 
+    /**
+     * Botón volver ayuda
+     */
     UI.botonVolver.addEventListener("click", function(e){
         reproducirAudio(audioClick);
         UI.mostrarPantalla("menu");
     });
 
+    /**
+     * Activar o desactivar audio
+     */
     UI.botonAudio.addEventListener("click", function(e){
         reproducirAudio(audioClick);
         if(audioActivado){
@@ -106,11 +121,17 @@ function iniciar(){
         }
     });
 
+    /**
+     * Continuar partida actual
+     */
     UI.botonContinuar.addEventListener("click", function(e){
         UI.mostrarPantalla("juego");
         reproducirAudio(audioClick);
     });
 
+    /**
+     * Eventos botones heroes
+     */
     UI.heroes.addEventListener("click", function(e){
         if(UI.habilitada()){
             if(e.target.localName === "button"){
@@ -129,11 +150,14 @@ function iniciar(){
         }
     });
 
+    /**
+     * Eventos de los casilleros
+     */
     UI.escenario.addEventListener("click", function(e){        
         const precio = precios[heroeActivo];
 
         if(UI.habilitada() && heroeActivo !== null){
-            if(e.target.classList.contains("columna")){
+            if(e.target.classList.contains("columna")){     // Celda vacía
                 const heroe = new Heroe(heroeActivo),
                       celda = e.target,
                       fila = parseInt(celda.dataset.f),
@@ -145,7 +169,7 @@ function iniciar(){
                     reproducirAudio(audioClick);
                 }
             } 
-            else if(e.target.localName === "img"){
+            else if(e.target.localName === "img"){          // Celda ocupada
                 const heroe = new Heroe(heroeActivo),
                       img = e.target,
                       contenedor = img.parentElement,
@@ -153,23 +177,28 @@ function iniciar(){
                       fila = parseInt(celda.dataset.f),
                       columna = parseInt(celda.dataset.c);
 
-                if(escenario[fila][columna].constructor.name === "Heroe" && comprarHeroe(precio)){
-                    celda.removeChild(contenedor);
-                    celda.appendChild(heroe.obtenerImagen());
-                    escenario[fila][columna] = heroe;
-                    reproducirAudio(audioClick);
-                }
-                else if(escenario[fila][columna].constructor.name === "Moneda"){
-                    celda.removeChild(contenedor);
-                    escenario[fila][columna] = null;
-                    oro += 25;
-                    UI.oro.textContent = oro;
-                    reproducirAudio(audioMoneda);
+                if(escenario[fila][columna] !== null){
+                    if(escenario[fila][columna].constructor.name === "Heroe" && comprarHeroe(precio)){
+                        celda.removeChild(contenedor);
+                        celda.appendChild(heroe.obtenerImagen());
+                        escenario[fila][columna] = heroe;
+                        reproducirAudio(audioClick);
+                    }
+                    else if(escenario[fila][columna].constructor.name === "Moneda"){
+                        celda.removeChild(contenedor);
+                        escenario[fila][columna] = null;
+                        oro += 30;
+                        UI.oro.textContent = oro;
+                        reproducirAudio(audioMoneda);
+                    }
                 }
             }
         }
     });
 
+    /**
+     * Crea los personajes de la ayuda
+     */
     function crearPersonajesAyuda(){
         const elfo = new Heroe("elfo");
         UI.ayuda.elfo.imagen.appendChild(elfo.obtenerImagen());
@@ -217,18 +246,30 @@ function iniciar(){
         `;
     }
 
+    /**
+     * Reproduce el audio cuando está activado
+     * @param {Audio} audio el audio a reproducir
+     */
     function reproducirAudio(audio){
         if(audioActivado){
             audio.play();
         }
     }
 
+    /**
+     * Detiene la reproducción del audio cuando está activado
+     * @param {Audio} audio el audio a detener
+     */
     function detenerAudio(audio){
         if(audioActivado){
             audio.stop();
         }
     }
 
+    /**
+     * Crea una nueva partida
+     * @param {Boolean} reintentar Indica si se vuelve a jugar la partida
+     */
     function nuevaPartida(reintentar){
         reproducirAudio(audioNuevaPartida);
         UI.mostrarPantalla("juego");
@@ -255,6 +296,9 @@ function iniciar(){
         }, 3000);
     }
 
+    /**
+     * Establece los valores iniciales para comenzar el juego
+     */
     function comenzarJuego(){
         reproducirAudio(audioMusica);
         reproduciendoMusica = true;
@@ -265,14 +309,18 @@ function iniciar(){
         loop();
     }
 
+    /**
+     * Actualiza los valores del nivel
+     * @param {Boolean} reintentar Indica si se vuelve a jugar la partida
+     */
     function actualizarNivel(reintentar){
         if(!reintentar){
             nivel++;
 
-            if(tiempoEnemigo > 2000){
-                tiempoEnemigo -= 200;
+            if(tiempoEnemigo > 1000){
+                tiempoEnemigo -= 250;
             }
-            if(cantidadEnemigos < 10){
+            if(cantidadEnemigos < 12){
                 cantidadEnemigos++;
             }
         }
@@ -280,6 +328,9 @@ function iniciar(){
         UI.nivel.textContent = nivel;
     }
 
+    /**
+     * Desactiva el botón de héroe
+     */
     function quitarUltimoActivo(){
         if(UI.obtenerHeroeActivo() !== null){
             UI.obtenerHeroeActivo().classList.remove("activo");
@@ -287,6 +338,11 @@ function iniciar(){
         }
     }
 
+    /**
+     * Permite comprar un héroe
+     * @param {Number} precio El precio
+     * @returns {Boolean} Si la compra del héroe es exitosa
+     */
     function comprarHeroe(precio){
         if(oro >= precio){
             oro -= precio; 
@@ -297,6 +353,9 @@ function iniciar(){
         return false;
     }
     
+    /**
+     * Inicia el array escenario
+     */
     function iniciarEscenario(){
         escenario = [];
 
@@ -315,6 +374,9 @@ function iniciar(){
         }
     }
 
+    /**
+     * Define el loop del juego
+     */
     function loop(){
         const duracionFrame = 200;
         let tiempoActual = 0;
@@ -364,6 +426,9 @@ function iniciar(){
         }, duracionFrame);
     }
 
+    /**
+     * Genera una nueva moneda
+     */
     function generarMoneda(){
         const celdasLibres = obtenerCeldasLibres();
         const indice = obtenerAleatorio(celdasLibres.length);
@@ -374,6 +439,10 @@ function iniciar(){
         UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
     }
 
+    /**
+     * Obtiene las celdas disponibles
+     * @returns {Array} Las celdas libres
+     */
     function obtenerCeldasLibres(){
         const celdasLibres = [];
 
@@ -391,6 +460,10 @@ function iniciar(){
         return celdasLibres;
     }
 
+    /**
+     * Desplaza un enemigo hacia otro casillero
+     * @param {Enemigo} enemigo El enemigo
+     */
     function moverEnemigo(enemigo){
         const posicion = enemigo.obtenerPosicion();
         const celdaEnemigo = UI.obtenerCelda(posicion.fila, posicion.columna);
@@ -434,6 +507,11 @@ function iniciar(){
 
     }
 
+    /**
+     * Verifica si es el fin del juego
+     * @param {Personaje} personaje El personaje
+     * @param {Boolean} esEnemigo Indica si es un enemigo
+     */
     function verificarFin(personaje, esEnemigo){
         if(esEnemigo){
             if(!personaje.haLlegado() && !personaje.estaCombatiendo() && personaje.obtenerPosicion().fila >= (escenario.length - 1)){
@@ -460,6 +538,9 @@ function iniciar(){
         }
     }
 
+    /**
+     * Crea un nuevo enemigo
+     */
     function generarEnemigo(){
         if(indiceEnemigoActual < cantidadEnemigos){
             const fila = 0,
@@ -484,6 +565,9 @@ function iniciar(){
         }
     }
 
+    /**
+     * Define las celdas en las que aparecerán los enemigos
+     */
     function crearCeldasEnemigos(){
         const cantidadColumnas = escenario[0].length;
 
@@ -493,6 +577,11 @@ function iniciar(){
         }
     }
 
+    /**
+     * Obtiene un número aleatoria
+     * @param {Number} limite El número límite
+     * @returns {Number} El número generado
+     */
     function obtenerAleatorio(limite){
         return Math.floor(Math.random() * limite);
     }
