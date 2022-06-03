@@ -62,7 +62,7 @@ function iniciar(){
      * Nueva partida
      */
     UI.botonPartida.addEventListener("click", function(e){
-        tiempoEnemigo = 3750;
+        tiempoEnemigo = 3250;
         cantidadEnemigos = 5;
         nivel = 0;
         oro = 150;
@@ -432,13 +432,16 @@ function iniciar(){
      */
     function generarMoneda(){
         const celdasLibres = obtenerCeldasLibres();
-        const indice = obtenerAleatorio(celdasLibres.length);
-        const celda = celdasLibres[indice];
-        
-        if(escenario[celda.fila][celda.columna] === null){
-            const moneda = new Moneda();    
-            escenario[celda.fila][celda.columna] = moneda;
-            UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
+
+        if(celdasLibres.length > 0){
+            const indice = obtenerAleatorio(celdasLibres.length);
+            const celda = celdasLibres[indice];
+            
+            if(escenario[celda.fila][celda.columna] === null){
+                const moneda = new Moneda();    
+                escenario[celda.fila][celda.columna] = moneda;
+                UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
+            }
         }
     }
 
@@ -495,7 +498,11 @@ function iniciar(){
                     const combate = new Combate(elementoEscenario, enemigo);
                     escenario[enemigo.obtenerPosicion().fila][posicion.columna] = combate;
                     enemigo.combatiendo(true);
-                    celdaEnemigo.removeChild(elementoEnemigo);
+                    
+                    for(let i=0; i<celdaEnemigo.children.length; i++){
+                        celdaEnemigo.removeChild(celdaEnemigo.children[i]);
+                    }
+
                     siguienteCelda.removeChild(siguienteCelda.children[0]);
                     siguienteCelda.appendChild(combate.obtenerImagen());         
                 } else if(elementoEscenario.constructor.name === "Moneda"){
