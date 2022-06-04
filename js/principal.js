@@ -62,7 +62,7 @@ function iniciar(){
      * Nueva partida
      */
     UI.botonPartida.addEventListener("click", function(e){
-        tiempoEnemigo = 3250;
+        tiempoEnemigo = 4250;
         cantidadEnemigos = 5;
         nivel = 0;
         oro = 150;
