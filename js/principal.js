@@ -318,7 +318,7 @@ function iniciar(){
         if(!reintentar){
             nivel++;
 
-            if(tiempoEnemigo > 1000){
+            if(tiempoEnemigo > 1500){
                 tiempoEnemigo -= 250;
             }
             if(cantidadEnemigos < 16){
@@ -436,12 +436,9 @@ function iniciar(){
         if(celdasLibres.length > 0){
             const indice = obtenerAleatorio(celdasLibres.length);
             const celda = celdasLibres[indice];
-            
-            if(escenario[celda.fila][celda.columna] === null){
-                const moneda = new Moneda();    
-                escenario[celda.fila][celda.columna] = moneda;
-                UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
-            }
+            const moneda = new Moneda();    
+            escenario[celda.fila][celda.columna] = moneda;
+            UI.obtenerCelda(celda.fila, celda.columna).appendChild(moneda.obtenerImagen());
         }
     }
 
@@ -454,7 +451,7 @@ function iniciar(){
 
         for(let i=0; i<escenario.length; i++){
             for(let j=0; j<escenario[i].length; j++){
-                if(escenario[i][j] === null){
+                if(escenario[i][j] === null && UI.obtenerCelda(i, j).children.length === 0){
                     celdasLibres.push({
                         fila: i,
                         columna: j
@@ -498,16 +495,12 @@ function iniciar(){
                     const combate = new Combate(elementoEscenario, enemigo);
                     escenario[enemigo.obtenerPosicion().fila][posicion.columna] = combate;
                     enemigo.combatiendo(true);
-                    
-                    for(let i=0; i<celdaEnemigo.children.length; i++){
-                        celdaEnemigo.removeChild(celdaEnemigo.children[i]);
-                    }
-
-                    siguienteCelda.removeChild(siguienteCelda.children[0]);
+                    limpiarCelda(celdaEnemigo);
+                    limpiarCelda(siguienteCelda);
                     siguienteCelda.appendChild(combate.obtenerImagen());         
                 } else if(elementoEscenario.constructor.name === "Moneda"){
                     escenario[enemigo.obtenerPosicion().fila][posicion.columna] = enemigo;
-                    siguienteCelda.removeChild(siguienteCelda.children[0]);
+                    limpiarCelda(siguienteCelda);
                     siguienteCelda.appendChild(elementoEnemigo);
                 }
 
@@ -515,6 +508,16 @@ function iniciar(){
             }, 900);
         }
 
+    }
+
+    /**
+     * Elimina el contenido de una celda
+     * @param {Object} celda El elemento que representa la celda
+     */
+    function limpiarCelda(celda){
+        for(let i=0; i<celda.children.length; i++){
+            celda.removeChild(celda.children[i]);
+        }
     }
 
     /**
