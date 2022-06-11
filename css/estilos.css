@@ -55,10 +55,6 @@ body {
     gap: 8px;
 }
 
-#escenario .fila .columna {
-    overflow: hidden;
-}
-
 #panel {
     width: 332px;
     margin-top: 10px;

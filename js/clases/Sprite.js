@@ -22,7 +22,6 @@ export class Sprite {
         contenedor.style.width = this.tamano + "px";
         contenedor.style.height = this.tamano + "px";
         contenedor.style.overflow = "hidden";
-        contenedor.style.display = "inline-block";
 
         return contenedor;
     }

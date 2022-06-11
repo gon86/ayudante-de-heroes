@@ -157,7 +157,7 @@ function iniciar(){
         const precio = precios[heroeActivo];
 
         if(UI.habilitada() && heroeActivo !== null){
-            if(e.target.classList.contains("columna")){     // Celda vacía
+            if(e.target.classList.contains("columna") && e.target.children.length === 0){     // Celda vacía
                 const heroe = new Heroe(heroeActivo),
                       celda = e.target,
                       fila = parseInt(celda.dataset.f),
@@ -179,13 +179,13 @@ function iniciar(){
 
                 if(escenario[fila][columna] !== null){
                     if(escenario[fila][columna].constructor.name === "Heroe" && comprarHeroe(precio)){
-                        celda.removeChild(contenedor);
+                        limpiarCelda(celda);
                         celda.appendChild(heroe.obtenerImagen());
                         escenario[fila][columna] = heroe;
                         reproducirAudio(audioClick);
                     }
                     else if(escenario[fila][columna].constructor.name === "Moneda"){
-                        celda.removeChild(contenedor);
+                        limpiarCelda(celda);
                         escenario[fila][columna] = null;
                         oro += 30;
                         UI.oro.textContent = oro;
@@ -365,7 +365,7 @@ function iniciar(){
             for(let j=0; j<UI.filas[i].children.length; j++){
                 const celda =  UI.filas[i].children[j];
                 if(celda.children.length > 0){
-                    celda.removeChild(celda.children[0]);
+                    limpiarCelda(celda);
                 }
                 celda.dataset.f = i;
                 celda.dataset.c = j;
@@ -402,7 +402,7 @@ function iniciar(){
                             if(ganador !== null){
                                 escenario[i][j] = ganador;
                                 const celdaGanador = UI.obtenerCelda(i, j);
-                                celdaGanador.removeChild(celdaGanador.children[0]);
+                                limpiarCelda(celdaGanador);
                                 celdaGanador.appendChild(ganador.obtenerImagen());
                                 if(ganador.constructor.name === "Enemigo"){
                                     ganador.combatiendo(false);
@@ -562,7 +562,7 @@ function iniciar(){
 
             if(escenario[fila][columna] !== null && escenario[fila][columna].constructor.name === "Moneda"){
                 escenario[fila][columna] = null;
-                celda.removeChild(celda.children[0]);
+                limpiarCelda(celda);
             }
 
             if(escenario[fila][columna] === null){
